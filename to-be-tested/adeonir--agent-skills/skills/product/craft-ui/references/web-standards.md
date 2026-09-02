@@ -1,0 +1,124 @@
+# Web Standards
+
+Technical correctness rules for rendered UI. The craft dimension references carry the visual recipes; this file carries their implementation counterpart, and it holds for every mockup: accessibility, focus, forms, images, theming.
+
+## When to Use
+
+Composed by `mockups.md` as generation rules. Not a direct trigger.
+
+## Accessibility
+
+- Icon-only buttons need `aria-label`.
+- Form controls need `<label>` (with `for`) or `aria-label`.
+- Interactive elements need keyboard handlers (`keydown`/`keyup`) when not using native elements.
+- `<button>` for actions, `<a>` for navigation — never `<div onclick>` or `<span onclick>`.
+- Images need `alt` (or `alt=""` if decorative).
+- Decorative icons need `aria-hidden="true"`.
+- Async updates (toasts, validation messages) need `aria-live="polite"`.
+- Use semantic HTML before ARIA — `<button>`, `<a>`, `<label>`, `<table>`, `<nav>`, `<dialog>`.
+- Headings follow hierarchical order `<h1>` through `<h6>` — never skip levels.
+- Include skip-to-content link as first focusable element.
+- Anchor targets with `scroll-margin-top` to clear fixed headers.
+
+## Focus States
+
+- Every interactive element needs visible focus: `focus-visible:ring-*` or equivalent outline.
+- Never `outline-none` / `outline: none` without a `focus-visible` replacement.
+- Use `:focus-visible` over `:focus` — avoids focus ring on mouse click.
+- Group focus with `:focus-within` for compound controls (search bar with button, input groups).
+
+## Forms
+
+- Inputs need `autocomplete` and meaningful `name` attributes.
+- Use correct `type` (`email`, `tel`, `url`, `number`) and `inputmode` for mobile keyboards.
+- Never block paste (`onpaste` + `preventDefault`).
+- Labels must be clickable — `for` or wrapping the control.
+- `spellcheck="false"` on emails, codes, usernames.
+- Checkbox/radio: label + control share a single hit target with no dead zones.
+- Submit button stays enabled until request starts; show spinner during request.
+- Errors inline next to fields; focus first error on submit.
+- Placeholders end with the ellipsis character and show an example pattern when useful.
+- `autocomplete="one-time-code"` on verification-code fields — never `autocomplete="off"` to dodge a password manager.
+- Warn before navigation with unsaved changes (`beforeunload` or router guard).
+
+## Animation (Technical)
+
+Rules for implementation — see motion.md for creative direction.
+
+- Honor `prefers-reduced-motion`: provide reduced variant or disable entirely.
+- Never animate layout-driving properties (`width`, `height`, `top`, `left`, margins) — they thrash layout. Transform and opacity are the safe defaults; the wider material palette is in [motion.md](motion.md).
+- Never `transition: all` — list properties explicitly.
+- Set correct `transform-origin` for scale and rotation.
+- SVG transforms go on `<g>` wrapper with `transform-box: fill-box; transform-origin: center`.
+- Animations must be interruptible — respond to user input mid-animation.
+
+## Typography (Technical)
+
+Rules for text rendering — see typography.md for pairing and visual-laws.md for hierarchy.
+
+- Ellipsis character: `…` not three periods in static text (use CSS `text-overflow: ellipsis` for truncation).
+- Curly quotes `“` `”` in copy, not straight `"`.
+- Non-breaking spaces: `10&nbsp;MB`, `⌘&nbsp;K`, multi-word brand names.
+- Loading states end with the ellipsis character: `Loading…`, `Saving…`.
+- `font-variant-numeric: tabular-nums` on number columns, prices, and comparisons.
+- `text-wrap: balance` or `text-wrap: pretty` on headings to prevent widows.
+
+## Content Handling
+
+- Text containers must handle long content: `truncate`, `line-clamp-*`, or `break-words`.
+- Flex children need `min-w-0` (or `min-width: 0`) to allow text truncation.
+- Handle empty states — never render broken UI for empty strings or arrays.
+- Anticipate short, average, and very long user-generated content.
+
+## Images
+
+- `<img>` needs explicit `width` and `height` attributes to prevent CLS.
+- Below-fold images: `loading="lazy"`.
+- Above-fold critical images: `fetchpriority="high"` on the Largest Contentful Paint candidate only.
+- Aspect ratio containers (`aspect-video`, `aspect-square`) for placeholder slots.
+
+## Navigation and State
+
+- URL reflects meaningful state — filters, tabs, pagination, expanded panels in query params.
+- Links use `<a>` for proper Cmd/Ctrl+click and middle-click support.
+- Deep-link stateful UI: an open tab, applied filter, or dialog the user would share or reload into belongs in the URL.
+- Destructive actions need confirmation modal or undo window — never immediate delete.
+
+## Touch and Interaction
+
+- `touch-action: manipulation` on interactive areas (prevents double-tap zoom delay).
+- `-webkit-tap-highlight-color` set intentionally (transparent or themed).
+- `overscroll-behavior: contain` in modals, drawers, and sheets.
+- During drag operations: disable text selection, `inert` on dragged element.
+- `autofocus` sparingly — desktop only, single primary input. Avoid on mobile.
+
+## Safe Areas
+
+- Full-bleed layouts need `env(safe-area-inset-*)` padding for notch devices.
+- Avoid unwanted scrollbars: `overflow-x: clip` on the root, never `hidden` — `hidden` turns the root into a scroll container and `position: sticky` inside it stops working. Fix content overflow at source either way.
+- Prefer flex/grid over JS measurement for layout.
+
+## Dark Mode (Technical)
+
+Rules for implementation — see color.md for color direction.
+
+- `color-scheme: dark` on `<html>` for dark themes (fixes scrollbar and input colors).
+- `<meta name="theme-color">` matches the page background color.
+- Native `<select>`: set explicit `background-color` and `color` (Windows dark mode breaks without them).
+
+## Internationalization
+
+- Dates and times: use `Intl.DateTimeFormat`, not hardcoded formats.
+- Numbers and currency: use `Intl.NumberFormat`, not hardcoded formats.
+- RTL safety: logical properties (`margin-inline`, `padding-block`, `text-align: start`) over physical ones.
+
+## Hover and Interactive States
+
+- Buttons and links need `hover:` state for visual feedback.
+- Interactive states increase contrast progressively: rest < hover < active < focus.
+
+## Content and copy
+
+Wording, voice, casing, and message content are outside this phase. Mockups use neutral placeholders with realistic lengths and do not author or edit final copy. The deterministic text rules — curly quotes, ellipsis, non-breaking spaces, tabular numerals — live in **Typography (Technical)** above.
+
+For failure-mode rules and HTML examples, see [anti-patterns.md](anti-patterns.md).

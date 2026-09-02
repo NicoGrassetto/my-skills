@@ -1,0 +1,68 @@
+# Agent Skills
+
+A collection of specialized expertise, workflows, and resources for LLM agents.
+
+## Overview
+
+This repository contains "Skills" — self-contained modules that teach AI agents how to perform specific, high-quality tasks or adhere to particular standards.
+
+## Available Skills
+
+### Go
+- **[ADK (Agent Development Kit)](./go-adk/SKILL.md)**: Expert guidance for building, running, and operating Go ADK v1.x agents with current launcher, runtime, toolset, and evaluation patterns.
+- **[Fx](./go-fx/SKILL.md)**: Expert Go development with the Uber Fx dependency injection framework for lifecycle management and boilerplate reduction.
+- **[Google Style Guide](./go-google-style-guide/SKILL.md)**: Expertise in Go programming according to the Google Go Style Guide.
+- **[Google Style Decisions](./go-google-style-decisions/SKILL.md)**: Specific choices and trade-offs for consistent Go codebases.
+- **[Google Best Practices](./go-google-best-practices/SKILL.md)**: Advanced idiomatic Go patterns and best practices from Google.
+- **[Uber Style Guide](./go-uber-style-guide/SKILL.md)**: Exhaustive expertise in Go programming according to the Uber Go Style Guide.
+- **[Senior Developer](./go-senior-developer/SKILL.md)**: Expert guidance for senior Go developers on architecture, concurrency, and performance.
+- **[OSS Maintainer](./go-oss-maintainer/SKILL.md)**: Expert Go OSS maintainer specializing in repository hygiene, CI/CD, and AI-agent compatibility.
+- **[Options Gen](./go-options-gen/SKILL.md)**: Expert in generating functional options for Go structs using the options-gen library.
+- **[Goose](./go-goose/SKILL.md)**: Expert guidance for goose CLI and Go library database migrations.
+- **[golangci-lint Strict](./golangci-lint-strict/SKILL.md)**: Install and pin powerman/golangci-lint-strict configs unchanged for exact golangci-lint versions.
+
+### Git
+- **[Gitflow](./gitflow/SKILL.md)**: Expert guidance on the Gitflow branching strategy and release management.
+- **[GitHub Flow](./github-flow/SKILL.md)**: Expert guidance on the lightweight GitHub Flow branching strategy.
+- **[Conventional Commits](./conventional-commits/SKILL.md)**: Expert at writing semantic, machine-readable commit messages.
+
+### Release & Distribution
+- **[Omnidist](./omnidist/SKILL.md)**: Expert workflow for initializing and operating omnidist release pipelines across npm and uv.
+
+### AI & Meta
+- **[Skill Writer](./skill-writer/SKILL.md)**: Expert at creating, documenting, and structuring new AI agent skills.
+
+## How to Use
+
+AI agents that support skills (like Gemini CLI, Claude Code, or OpenAI Codex) can discover and activate these skills.
+
+### Using the CLI Tool (Recommended)
+
+The easiest way to install skills from this repository is:
+
+```bash
+npx skills add metalagman/agent-skills
+```
+
+### Quick Start (Clone & Symlink)
+
+The most efficient way to use these skills and stay updated is to clone the repository and symlink desired skills into `~/.agents/skills`.
+
+```bash
+# Clone the repository
+git clone git@github.com:metalagman/agent-skills.git ~/Projects/agent-skills
+
+# Create the skills directory if it doesn't exist
+mkdir -p ~/.agents/skills
+
+# Symlink a specific skill
+ln -s ~/Projects/agent-skills/go-uber-style-guide ~/.agents/skills/go-uber-style-guide
+```
+
+### Manual Placement
+
+1.  **Placement**: Clone this repository locally.
+2.  **Symlink**: Symlink specific skill folders into `~/.agents/skills/`.
+3.  **Activation**: The agent will automatically discover skills from `SKILL.md` metadata when relevant.
+
+For more technical details on how skills are structured and processed, see [AGENTS.md](./AGENTS.md).

@@ -1,0 +1,140 @@
+# Agent Skills
+
+A personal collection of skills for AI coding agents. Each skill packages instructions, references, and workflows that extend agent capabilities beyond their defaults.
+
+## What are Skills?
+
+Skills are packaged instructions that teach AI agents new workflows and specialized knowledge. Think of them as plugins — a `SKILL.md` file with YAML frontmatter tells the agent when to activate, and markdown content tells it what to do. Supporting files (references, templates, scripts) are loaded on demand to keep context usage minimal.
+
+Skills follow the [Agent Skills](https://agentskills.io) open standard, which originated in Claude Code and has been adopted across all major AI coding agents.
+
+## Installation
+
+Install any skill with a single command using the [Skills CLI](https://skills.sh):
+
+```bash
+npx skills add adeonir/agent-skills
+```
+
+Or install a single skill:
+
+```bash
+npx skills add adeonir/agent-skills/<skill-name>
+```
+
+## Skills
+
+### Engineering
+
+| Skill | Description |
+| ----- | ----------- |
+| **[debug-tools](skills/engineering/debug-tools)** | Iterative investigate–fix–verify debugging with confidence scoring |
+| **[git-helpers](skills/engineering/git-helpers)** | Conventional commits, pull requests, and branch lifecycle |
+| **[plain-spoken](skills/engineering/plain-spoken)** | STE-inspired technical prose with less jargon and preserved precision |
+| **[review-lens](skills/engineering/review-lens)** | Confidence-scored pre-PR code review in quick and deep modes |
+| **[rule-creator](skills/engineering/rule-creator)** | Create and manage Claude Code rules in `.claude/rules/` |
+| **[spec-driven](skills/engineering/spec-driven)** | Spec-driven feature development from spec to audited delivery, with requirements traceability |
+
+### Product
+
+| Skill | Description |
+| ----- | ----------- |
+| **[brainstorm](skills/product/brainstorm)** | Structured idea exploration and plan stress-testing, diverge to converge |
+| **[copywriting](skills/product/copywriting)** | Authors `copy.yaml` — write, extract, refresh, plus critique and audit |
+| **[craft-ui](skills/product/craft-ui)** | Wireframe the arrangement, then mockup the visual direction, and deliver the chosen one |
+| **[design-brief](skills/product/design-brief)** | Visual identity — explore a direction, assess or evolve an existing one, and author `DESIGN.md` |
+| **[docs-writer](skills/product/docs-writer)** | Structured docs: PRD, Brief, Design Doc, ADR |
+| **[epic-tracker](skills/product/epic-tracker)** | Epics, stories, bugs, and tasks — tracked in Linear or GitHub |
+
+### Personal
+
+| Skill | Description |
+| ----- | ----------- |
+| **[anti-slop](skills/personal/anti-slop)** | Edit drafts into sharper, more human prose, or detect AI tells without rewriting |
+| **[notes](skills/personal/notes)** | Obsidian notes for projects, meetings, challenges, and brag docs |
+| **[handoff](skills/personal/handoff)** | Save and resume conversation state across sessions |
+| **[wrap-up](skills/personal/wrap-up)** | End-of-session context persistence to Obsidian |
+
+## How They Connect
+
+```mermaid
+flowchart TD
+    BR[brainstorm] -->|direction| DW_PRD[docs-writer · product]
+    BR -->|direction| DB[design-brief]
+    BR -.->|direction| SD[spec-driven]
+    DW_PRD -->|requirements| DW_DD[docs-writer · technical]
+    DW_PRD -->|requirements| ET[epic-tracker]
+    DW_PRD -->|requirements| DB
+    DW_PRD -->|requirements| CU[craft-ui]
+    DW_PRD -->|requirements| CW[copywriting]
+    CW -->|content| CU
+    DB -->|tokens| CU
+    CU -->|interface| SD
+    DW_DD -->|technical doc| SD
+    DW_DD -->|technical doc| ET
+    DW_DD -->|technical doc| DB
+    DW_DD -.->|extract decision| DW_ADR[docs-writer · decision]
+    ET -->|stories| SD
+    SD -->|commits & pull requests| GH[git-helpers]
+    SD -.->|coherence gap| DW_DD
+```
+
+Dashed arrow: optional shortcut for small, well-scoped work.
+**debug-tools**, **rule-creator**, **notes**, **handoff**, and **wrap-up** are available at any point — utilities and reviews used as needed, not mandatory pipeline stages.
+
+## Using the Flow
+
+The full flow when building a new product or feature with non-trivial
+business logic:
+
+```
+1.  brainstorm       --> direction and constraints
+2.  docs-writer      --> requirements (what to build, for whom, why)
+3.  docs-writer      --> technical decisions and trade-offs
+4.  design-brief     --> visual identity and design tokens
+5.  copywriting      --> content and copy
+6.  craft-ui         --> wireframe the arrangement, mockup the visual direction
+7.  epic-tracker     --> epics, stories, acceptance criteria
+8.  spec-driven      --> per-story spec, design, tasks, implementation
+9.  review-lens      --> review changes before commit
+10. git-helpers      --> commit, pull request, finish branch
+```
+
+### Feedback loop
+
+`spec-driven` discovers coherence gaps during implementation and signals back:
+
+```
+spec-driven discovers gap (missing entity, orphan flow, NFR drift)
+    --> records the gap in PROJECT.md ## Gotchas
+    --> user reruns docs-writer with update mode
+    --> docs-writer re-enters the responsible phase scoped to the gap
+    --> spec-driven resumes with updated technical doc
+```
+
+## Output Structure
+
+```
+docs/
+├── product/        # brainstorm: brainstorm.md · docs-writer: PRD, brief
+├── tech/           # docs-writer: design-doc
+├── adr/            # docs-writer: append-only decision log
+└── design/         # design-brief: locked direction (moodboard.md) · copywriting: content · craft-ui: chosen mockup
+
+PROJECT.md          # spec-driven: committed project memory
+.artifacts/
+├── specs/          # spec-driven: per-feature artifacts, state, and signals
+├── archive/        # spec-driven: features archived manually, in any state
+├── LESSONS.md      # spec-driven: canonical lessons (machine-owned)
+├── research/       # spec-driven: research cache
+└── design/         # design-brief: tune session events · craft-ui: structure.yaml + VARIANTS.md + wireframes/ + mockups/
+```
+
+`epic-tracker` writes no artifacts here — its epics, stories, bugs, and tasks
+live in the tracker (Linear or GitHub).
+
+Skills write to `docs/` (committed, human-facing) and `.artifacts/` (gitignored agent workspace).
+
+## License
+
+MIT
