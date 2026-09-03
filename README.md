@@ -16,3 +16,4 @@ Unreviewed third-party skills are quarantined in [to-be-tested/](to-be-tested/).
 - [gohypergiant/agent-skills](https://github.com/gohypergiant/agent-skills)
 - [metalagman/agent-skills](https://github.com/metalagman/agent-skills)
 - [agentskills/agentskills](https://github.com/agentskills/agentskills)
+- [garrytan/gstack](https://github.com/garrytan/gstack)

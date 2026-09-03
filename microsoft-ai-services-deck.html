@@ -1,0 +1,1247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#0f0f0f">
+  <meta name="description" content="A self-contained visual map of the current Microsoft Foundry Tools portfolio and adjacent Microsoft AI platform capabilities.">
+  <title>All AI services — Microsoft Foundry</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <style>
+    :root {
+      --brand-primary: #643fb2;
+      --brand-violet: #a87cf2;
+      --brand-peach: #fab99a;
+      --brand-blue: #29c3ff;
+      --brand-green: #67e0a5;
+      --brand-surface: #0f0f0f;
+      --brand-surface-2: #17151b;
+      --brand-surface-3: #211d29;
+      --brand-text: #ffffff;
+      --brand-muted: #d6d6d6;
+      --brand-dim: #a7a7a7;
+      --font-heading: Aptos, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --font-body: Aptos, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --motion-ease: cubic-bezier(.22, 1, .36, 1);
+      --motion-snappy: cubic-bezier(.33, 0, .67, 1);
+      --u: min(1vw, 1.7777777778vh);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      min-width: 320px;
+      min-height: 100%;
+      margin: 0;
+      background: #070707;
+      color: var(--brand-text);
+      font-family: var(--font-body);
+    }
+
+    body {
+      display: grid;
+      min-height: 100vh;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    button,
+    a {
+      color: inherit;
+      font: inherit;
+    }
+
+    :focus-visible {
+      outline: calc(var(--u) * .16) solid #9fdbff;
+      outline-offset: calc(var(--u) * .2);
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 1000;
+      padding: .75rem 1rem;
+      border-radius: 999px;
+      background: #ffffff;
+      color: #111111;
+      font-weight: 700;
+      transform: translateY(-180%);
+      transition: transform .18s ease;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .sr-only {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .deck {
+      position: relative;
+      width: calc(var(--u) * 100);
+      height: calc(var(--u) * 56.25);
+      overflow: hidden;
+      overflow: clip;
+      isolation: isolate;
+      background: var(--brand-surface);
+      box-shadow: 0 0 calc(var(--u) * 5) rgba(0, 0, 0, .65);
+    }
+
+    .deck::after {
+      position: absolute;
+      inset: 0;
+      z-index: 100;
+      border: 1px solid rgba(255, 255, 255, .08);
+      content: "";
+      pointer-events: none;
+    }
+
+    .stage {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: clip;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: block;
+      overflow: hidden;
+      padding: calc(var(--u) * 2.2) calc(var(--u) * 4.2) calc(var(--u) * 4.1);
+      background:
+        radial-gradient(circle at 17% 82%, rgba(41, 195, 255, .11), transparent 27%),
+        radial-gradient(circle at 84% 22%, rgba(168, 124, 242, .18), transparent 31%),
+        linear-gradient(145deg, #0f0f0f 0%, #101014 54%, #0d0b12 100%);
+      opacity: 1;
+      transform: none;
+    }
+
+    .slide::before {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-image: radial-gradient(circle, rgba(255, 255, 255, .18) 0 calc(var(--u) * .06), transparent calc(var(--u) * .07));
+      background-size: calc(var(--u) * 2.05) calc(var(--u) * 2.05);
+      content: "";
+      opacity: .38;
+      pointer-events: none;
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, .72) 63%, transparent 100%);
+      mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, .72) 63%, transparent 100%);
+    }
+
+    .slide::after {
+      position: absolute;
+      right: calc(var(--u) * -9);
+      bottom: calc(var(--u) * -17);
+      z-index: 0;
+      width: calc(var(--u) * 42);
+      height: calc(var(--u) * 42);
+      border-radius: 50%;
+      background: rgba(250, 185, 154, .11);
+      filter: blur(calc(var(--u) * 5));
+      content: "";
+      pointer-events: none;
+    }
+
+    .slide-header,
+    .slide-content,
+    .source-line {
+      position: relative;
+      z-index: 2;
+    }
+
+    .slide-header {
+      display: flex;
+      height: calc(var(--u) * 2.5);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--u) * .55);
+      color: #ffffff;
+      font-size: calc(var(--u) * .86);
+      font-weight: 600;
+      line-height: 1;
+      text-decoration: none;
+    }
+
+    .brand svg,
+    .brand img {
+      width: calc(var(--u) * 1.22);
+      height: calc(var(--u) * 1.22);
+      flex: 0 0 auto;
+      object-fit: contain;
+    }
+
+    .section-index {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--u) * .65);
+      color: var(--brand-muted);
+      font-size: calc(var(--u) * .68);
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .section-index::before {
+      width: calc(var(--u) * 2.4);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .55));
+      content: "";
+    }
+
+    .slide-content {
+      height: calc(100% - calc(var(--u) * 2.5));
+    }
+
+    .services-layout {
+      display: grid;
+      height: 100%;
+      grid-template-columns: calc(var(--u) * 27.2) 1fr;
+      gap: calc(var(--u) * 2.4);
+      align-items: center;
+    }
+
+    .services-intro {
+      padding: 0 0 calc(var(--u) * .7) calc(var(--u) * .15);
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--u) * .55);
+      margin: 0 0 calc(var(--u) * .82);
+      color: #cbbcf4;
+      font-size: calc(var(--u) * .67);
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: calc(var(--u) * .48);
+      height: calc(var(--u) * .48);
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-peach), var(--brand-violet));
+      box-shadow: 0 0 calc(var(--u) * 1.1) rgba(168, 124, 242, .7);
+      content: "";
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: var(--font-heading);
+    }
+
+    h1 {
+      max-width: calc(var(--u) * 27);
+      margin-bottom: calc(var(--u) * .95);
+      font-size: calc(var(--u) * 4.05);
+      font-weight: 600;
+      letter-spacing: -.055em;
+      line-height: .93;
+    }
+
+    h1 span {
+      display: block;
+      color: #ffffff;
+      background: linear-gradient(96deg, #ffffff 0%, #ffffff 22%, #d6c7ff 60%, #f5b9a4 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .lede {
+      max-width: calc(var(--u) * 25.5);
+      margin-bottom: calc(var(--u) * 1.18);
+      color: var(--brand-muted);
+      font-size: calc(var(--u) * .92);
+      line-height: 1.43;
+    }
+
+    .platform-label {
+      display: block;
+      margin-bottom: calc(var(--u) * .48);
+      color: #aaa4b0;
+      font-size: calc(var(--u) * .54);
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: calc(var(--u) * .38);
+    }
+
+    .platform-chip {
+      display: flex;
+      min-height: calc(var(--u) * 2.28);
+      align-items: center;
+      gap: calc(var(--u) * .43);
+      padding: calc(var(--u) * .38) calc(var(--u) * .56);
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: calc(var(--u) * .52);
+      background: rgba(31, 31, 31, .68);
+      color: #e2dfe5;
+      font-size: calc(var(--u) * .56);
+      font-weight: 650;
+      line-height: 1.12;
+    }
+
+    .platform-chip::before {
+      width: calc(var(--u) * .34);
+      height: calc(var(--u) * .34);
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--chip-color, var(--brand-violet));
+      box-shadow: 0 0 calc(var(--u) * .58) color-mix(in srgb, var(--chip-color, var(--brand-violet)) 72%, transparent);
+      content: "";
+    }
+
+    .platform-chip:nth-child(2),
+    .platform-chip:nth-child(5) {
+      --chip-color: var(--brand-peach);
+    }
+
+    .platform-chip:nth-child(3),
+    .platform-chip:nth-child(6) {
+      --chip-color: var(--brand-blue);
+    }
+
+    .scope-note {
+      margin: calc(var(--u) * .72) 0 0;
+      color: #9c98a2;
+      font-size: calc(var(--u) * .53);
+      line-height: 1.4;
+    }
+
+    .service-atlas {
+      position: relative;
+      height: calc(var(--u) * 41.15);
+      overflow: hidden;
+      padding: calc(var(--u) * 1.15) calc(var(--u) * 1.25) calc(var(--u) * 1.05);
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: calc(var(--u) * 1.15);
+      background:
+        radial-gradient(circle at 78% 18%, rgba(168, 124, 242, .17), transparent 27%),
+        radial-gradient(circle at 22% 84%, rgba(41, 195, 255, .08), transparent 30%),
+        linear-gradient(145deg, rgba(24, 24, 28, .96), rgba(12, 11, 18, .98));
+      box-shadow:
+        calc(var(--u) * .65) calc(var(--u) * 1.1) calc(var(--u) * 3.4) rgba(168, 124, 242, .23),
+        0 0 calc(var(--u) * 2.2) rgba(41, 195, 255, .08);
+    }
+
+    .service-atlas::before {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
+      background-size: calc(var(--u) * 2.1) calc(var(--u) * 2.1);
+      content: "";
+      opacity: .7;
+      pointer-events: none;
+      -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 0 55%, transparent 94%);
+      mask-image: radial-gradient(circle at 50% 50%, #000 0 55%, transparent 94%);
+    }
+
+    .service-atlas::after {
+      position: absolute;
+      inset: calc(var(--u) * .68);
+      border: 1px solid rgba(168, 124, 242, .14);
+      border-radius: calc(var(--u) * .78);
+      content: "";
+      pointer-events: none;
+    }
+
+    .atlas-header,
+    .service-grid {
+      position: relative;
+      z-index: 2;
+    }
+
+    .atlas-header {
+      display: flex;
+      min-height: calc(var(--u) * 2.35);
+      align-items: start;
+      justify-content: space-between;
+      gap: calc(var(--u) * 1.2);
+    }
+
+    .atlas-kicker {
+      display: flex;
+      align-items: center;
+      gap: calc(var(--u) * .48);
+      margin-bottom: calc(var(--u) * .18);
+      color: #c9c0d7;
+      font-size: calc(var(--u) * .54);
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .atlas-kicker::before {
+      width: calc(var(--u) * .46);
+      height: calc(var(--u) * .46);
+      border-radius: 50%;
+      background: #8fe7ff;
+      box-shadow: 0 0 calc(var(--u) * .85) rgba(41, 195, 255, .95);
+      content: "";
+      animation: signalPulse 2s ease-in-out infinite;
+    }
+
+    .atlas-header h2 {
+      margin: 0;
+      font-size: calc(var(--u) * 1.18);
+      font-weight: 600;
+      letter-spacing: -.02em;
+    }
+
+    .atlas-legend {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: end;
+      gap: calc(var(--u) * .32);
+      padding-top: calc(var(--u) * .16);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: calc(var(--u) * .3);
+      padding: calc(var(--u) * .24) calc(var(--u) * .46);
+      border: 1px solid rgba(255, 255, 255, .13);
+      border-radius: 999px;
+      background: rgba(20, 20, 24, .7);
+      color: #bbb6c1;
+      font-size: calc(var(--u) * .46);
+      font-weight: 650;
+    }
+
+    .legend-item::before {
+      width: calc(var(--u) * .29);
+      height: calc(var(--u) * .29);
+      border-radius: 50%;
+      background: var(--family-color);
+      content: "";
+    }
+
+    .legend-communicate {
+      --family-color: var(--brand-peach);
+    }
+
+    .legend-understand {
+      --family-color: var(--brand-violet);
+    }
+
+    .legend-retrieve {
+      --family-color: var(--brand-blue);
+    }
+
+    .service-grid {
+      display: grid;
+      margin-top: calc(var(--u) * .68);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(5, calc(var(--u) * 6.02));
+      gap: calc(var(--u) * .48) calc(var(--u) * .58);
+    }
+
+    .service-card {
+      position: relative;
+      display: grid;
+      min-width: 0;
+      overflow: hidden;
+      padding: calc(var(--u) * .62) calc(var(--u) * .72);
+      grid-template-columns: calc(var(--u) * 2.45) 1fr;
+      gap: calc(var(--u) * .66);
+      align-items: center;
+      border: 1px solid color-mix(in srgb, var(--family-color) 31%, rgba(255, 255, 255, .13));
+      border-radius: calc(var(--u) * .72);
+      background: linear-gradient(145deg, rgba(34, 32, 39, .94), rgba(17, 16, 22, .9));
+      box-shadow: 0 calc(var(--u) * .2) calc(var(--u) * .72) rgba(0, 0, 0, .25);
+      color: inherit;
+      text-decoration: none;
+      transition: border-color .16s var(--motion-snappy), transform .28s var(--motion-ease), background .16s var(--motion-snappy);
+    }
+
+    .service-card::before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: calc(var(--u) * .14);
+      background: var(--family-color);
+      content: "";
+      opacity: .78;
+    }
+
+    .service-card::after {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .11) 50%, transparent 62%);
+      content: "";
+      pointer-events: none;
+      transform: translateX(-135%);
+      transition: transform .65s var(--motion-ease);
+    }
+
+    .service-card:hover {
+      border-color: color-mix(in srgb, var(--family-color) 62%, white 6%);
+      background: linear-gradient(145deg, rgba(61, 46, 82, .9), rgba(21, 19, 28, .9));
+      transform: translateY(calc(var(--u) * -.1));
+    }
+
+    .service-card:hover::after {
+      transform: translateX(135%);
+    }
+
+    .family-communicate {
+      --family-color: var(--brand-peach);
+    }
+
+    .family-understand {
+      --family-color: var(--brand-violet);
+    }
+
+    .family-retrieve {
+      --family-color: var(--brand-blue);
+    }
+
+    .icon-shell {
+      display: grid;
+      width: calc(var(--u) * 2.35);
+      height: calc(var(--u) * 2.35);
+      place-items: center;
+      border: 1px solid color-mix(in srgb, var(--family-color) 33%, transparent);
+      border-radius: calc(var(--u) * .58);
+      background: color-mix(in srgb, var(--family-color) 9%, rgba(255, 255, 255, .025));
+    }
+
+    .service-icon {
+      width: calc(var(--u) * 1.62);
+      height: calc(var(--u) * 1.62);
+      flex: 0 0 auto;
+    }
+
+    .service-copy {
+      min-width: 0;
+    }
+
+    .service-family {
+      display: block;
+      margin-bottom: calc(var(--u) * .13);
+      color: color-mix(in srgb, var(--family-color) 82%, white 18%);
+      font-size: calc(var(--u) * .45);
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .service-card h3 {
+      margin: 0 0 calc(var(--u) * .14);
+      color: #f8f7fa;
+      font-size: calc(var(--u) * .82);
+      font-weight: 650;
+      line-height: 1.05;
+    }
+
+    .service-card p {
+      margin: 0;
+      color: #bcb8c1;
+      font-size: calc(var(--u) * .57);
+      line-height: 1.25;
+    }
+
+    .source-line {
+      position: absolute;
+      right: calc(var(--u) * 14.3);
+      bottom: calc(var(--u) * 1.35);
+      left: calc(var(--u) * 12.4);
+      overflow: hidden;
+      color: #8f8c94;
+      font-size: calc(var(--u) * .54);
+      line-height: 1.35;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .source-line a {
+      color: #bbb6c3;
+      text-decoration-color: rgba(187, 182, 195, .55);
+      text-underline-offset: calc(var(--u) * .14);
+    }
+
+    .deck-progress {
+      position: absolute;
+      bottom: calc(var(--u) * 1.45);
+      left: calc(var(--u) * 4.2);
+      z-index: 35;
+      width: calc(var(--u) * 7.5);
+      height: calc(var(--u) * .18);
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .12);
+    }
+
+    .deck-progress span {
+      display: block;
+      width: var(--progress, 100%);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--brand-peach), var(--brand-violet), var(--brand-blue));
+      transition: width .55s var(--motion-ease);
+    }
+
+    .controls {
+      position: absolute;
+      right: calc(var(--u) * 4.2);
+      bottom: calc(var(--u) * .83);
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      gap: calc(var(--u) * .42);
+    }
+
+    .control-button {
+      display: grid;
+      width: calc(var(--u) * 2.35);
+      height: calc(var(--u) * 2.35);
+      padding: 0;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, .22);
+      border-radius: 50%;
+      background: rgba(26, 26, 26, .82);
+      color: #ffffff;
+      cursor: pointer;
+      backdrop-filter: blur(calc(var(--u) * .6));
+      transition: background .1s var(--motion-snappy), border .1s var(--motion-snappy), transform .22s var(--motion-ease);
+    }
+
+    .control-button:hover:not(:disabled) {
+      border-color: rgba(255, 255, 255, .45);
+      background: var(--brand-primary);
+      transform: translateY(calc(var(--u) * -.12));
+    }
+
+    .control-button:disabled {
+      cursor: default;
+      opacity: .35;
+    }
+
+    .control-button svg {
+      width: calc(var(--u) * .9);
+      height: calc(var(--u) * .9);
+    }
+
+    .slide-counter {
+      min-width: calc(var(--u) * 4.15);
+      color: #d4d1d7;
+      font-variant-numeric: tabular-nums;
+      font-size: calc(var(--u) * .66);
+      font-weight: 650;
+      letter-spacing: .08em;
+      text-align: center;
+    }
+
+    .overview {
+      position: absolute;
+      inset: 0;
+      z-index: 80;
+      display: grid;
+      padding: calc(var(--u) * 4.1) calc(var(--u) * 5.2);
+      place-items: center;
+      background: rgba(7, 7, 9, .92);
+      backdrop-filter: blur(calc(var(--u) * 1.2));
+    }
+
+    .overview[hidden] {
+      display: none;
+    }
+
+    .overview-panel {
+      width: 100%;
+      max-width: calc(var(--u) * 86);
+    }
+
+    .overview-header {
+      display: flex;
+      margin-bottom: calc(var(--u) * 2.2);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .overview-header h2 {
+      margin: 0;
+      font-size: calc(var(--u) * 2.45);
+    }
+
+    .overview-card {
+      position: relative;
+      width: min(100%, calc(var(--u) * 42));
+      min-height: calc(var(--u) * 15.1);
+      overflow: hidden;
+      padding: calc(var(--u) * 1.5);
+      border: 1px solid #b89eff;
+      border-radius: calc(var(--u) * .9);
+      background: linear-gradient(145deg, rgba(31, 31, 31, .96), rgba(23, 19, 30, .96));
+      color: #ffffff;
+      cursor: pointer;
+      text-align: left;
+      box-shadow: inset 0 0 0 1px rgba(184, 158, 255, .3);
+      transition: border-color .15s var(--motion-snappy), transform .28s var(--motion-ease);
+    }
+
+    .overview-card:hover {
+      border-color: #d4c5ff;
+      transform: translateY(calc(var(--u) * -.25));
+    }
+
+    .overview-card::after {
+      position: absolute;
+      right: calc(var(--u) * -2);
+      bottom: calc(var(--u) * -2);
+      width: calc(var(--u) * 9);
+      height: calc(var(--u) * 9);
+      border-radius: 50%;
+      background: rgba(100, 63, 178, .2);
+      content: "";
+    }
+
+    .overview-card span {
+      display: block;
+      margin-bottom: calc(var(--u) * 2.6);
+      color: #ab98e4;
+      font-size: calc(var(--u) * .61);
+      font-weight: 700;
+      letter-spacing: .15em;
+    }
+
+    .overview-card strong {
+      display: block;
+      margin-bottom: calc(var(--u) * .55);
+      font-size: calc(var(--u) * 1.35);
+      font-weight: 600;
+    }
+
+    .overview-card small {
+      display: block;
+      max-width: 85%;
+      color: #b9b5bd;
+      font-size: calc(var(--u) * .7);
+      line-height: 1.4;
+    }
+
+    .js .slide {
+      pointer-events: none;
+      opacity: 0;
+      transform: translate3d(5%, 0, 0) scale(.985);
+      transition: opacity .42s var(--motion-snappy), transform .72s var(--motion-ease), visibility .72s step-end;
+      visibility: hidden;
+    }
+
+    .js .slide.is-active {
+      z-index: 5;
+      pointer-events: auto;
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+      transition: opacity .5s var(--motion-snappy), transform .78s var(--motion-ease), visibility 0s step-start;
+      visibility: visible;
+    }
+
+    .motion-ready .slide.is-active .reveal {
+      animation: revealUp .82s var(--motion-ease) both;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .motion-ready .slide.is-active .reveal-scale {
+      animation: revealScale .9s var(--motion-ease) both;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .motion-ready .slide.is-active .service-card {
+      animation: cardRise .64s var(--motion-ease) both;
+      animation-delay: var(--delay, .28s);
+    }
+
+    @keyframes revealUp {
+      from { opacity: 0; transform: translateY(calc(var(--u) * 1.25)); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes revealScale {
+      from { opacity: 0; transform: scale(.96) translateY(calc(var(--u) * .8)); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    @keyframes cardRise {
+      from { opacity: 0; transform: translateY(calc(var(--u) * .75)) scale(.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes signalPulse {
+      0%, 100% { opacity: .55; transform: scale(.82); }
+      50% { opacity: 1; transform: scale(1.15); }
+    }
+
+    html:not(.js) body {
+      display: block;
+      overflow: auto;
+    }
+
+    html:not(.js) .deck {
+      width: calc(var(--u) * 100);
+      height: auto;
+      margin: 0 auto;
+      overflow: visible;
+    }
+
+    html:not(.js) .stage {
+      height: auto;
+    }
+
+    html:not(.js) .slide {
+      position: relative;
+      width: calc(var(--u) * 100);
+      height: calc(var(--u) * 56.25);
+    }
+
+    html:not(.js) .controls,
+    html:not(.js) .deck-progress,
+    html:not(.js) .overview {
+      display: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+
+      .slide,
+      .reveal,
+      .reveal-scale,
+      .service-card,
+      .atlas-kicker::before {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    @media print {
+      @page { size: 16in 9in; margin: 0; }
+
+      :root { --u: .16in; }
+
+      html,
+      body {
+        display: block;
+        min-width: 0;
+        min-height: 0;
+        background: #ffffff;
+        overflow: visible;
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .skip-link,
+      .controls,
+      .deck-progress,
+      .overview {
+        display: none !important;
+      }
+
+      .deck,
+      .stage {
+        width: 16in;
+        height: auto;
+        overflow: visible;
+        box-shadow: none;
+      }
+
+      .deck::after {
+        display: none;
+      }
+
+      .slide,
+      .js .slide,
+      .js .slide.is-active {
+        position: relative !important;
+        display: block !important;
+        width: 16in;
+        height: 9in;
+        break-after: page;
+        page-break-after: always;
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        visibility: visible !important;
+      }
+
+      .reveal,
+      .reveal-scale,
+      .service-card,
+      .atlas-kicker::before {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#services">Skip to presentation</a>
+
+  <div class="deck" id="deck">
+    <main class="stage" id="stage" aria-label="Presentation slides">
+      <section class="slide is-active" id="services" aria-labelledby="services-title" data-title="All AI services">
+        <header class="slide-header">
+          <a class="brand" href="https://azure.microsoft.com/" target="_blank" rel="noreferrer" aria-label="Microsoft Azure home">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAACXBIWXMAAAsTAAALEwEAmpwYAAACRElEQVQ4jaWSv0+cRxRFz3vzAbvYVnYjJCiIspIlF1RQpIzy0aXbULoCu3PnylWkKIVrO5Vd4v8Ad3a3skQdkj6wihQFJcj8thd25t0UwGI7Fi483Vxpjt6Z+0wSn3uqD4P20uMO29s/3fzxLo3ZWTyf5RFC8Mv6N9c2PgnhNGp8cuXg9z/UnLtl8e8RJkBgUgdY/PCJ/w+SxpZp3WD3ZY9wUBElB5GDGMb8Ym+vdSWkvfS0o+S1xscYvsGOehsIoSKiSApab6B7JaQ4tbySrBLtaY7/3CZ8HBVJOSyGgYZauVrHx5blCVIy3Zhk99U6qlzKMhWkEpBjfmHtfaURpH17tSP3GneTObKK/NYZ/vXPb5ED5bDIIgpfOCcrH4UUTzVeSV6BV8jHFFNf9ZI3np/roCw0LCZ596MQebWslAxPhCfJHWtWz3LOq8phUZBCRBHK8d3CWr/1HqR5Z60jT7UsSZ7AE5aSJej9+sNMP7J65GKjaXJYHE+MlM6XLWpZAocy3mAwNWdwApQte7DBzJcw/fU0EiAhmVB0gceXOpZGrXg+YWJ/EyjnsyZ2Nv9GZxooC3KYhqoXVs+UvHnvRcdSqkkVMkee8MEhafB6CWMPc8r1Noc7+2egcrl8J6e+AuClUIdXugDIKslTLz/6dg2zRaBP1eBg9/D8P8RF5RR1Adwr7+Ju8sSFEp6eAejh3AakRVLqHx8PiTICQBFkzQOYJJr3XnTe7f3tk+/7797t536rNTFozbQal+EABrC3db+z9x9u5ltDeU85EgAAAABJRU5ErkJggg==" width="17" height="17" alt="">
+            <span>Azure</span>
+          </a>
+          <span class="section-index">01 / AI services</span>
+        </header>
+
+        <div class="slide-content services-layout">
+          <div class="services-intro">
+            <p class="eyebrow reveal" style="--delay: .06s">Portfolio map</p>
+            <h1 class="reveal" id="services-title" style="--delay: .13s">All AI services. <span>One Cloud</span></h1>
+            <p class="lede reveal" style="--delay: .2s">Microsoft Foundry brings models, agents, knowledge, and ready-to-use tools into one governed app-and-agent factory.</p>
+
+            <span class="platform-label reveal" style="--delay: .32s">Adjacent platform capabilities</span>
+            <div class="platform-grid reveal" style="--delay: .36s" aria-label="Adjacent Microsoft AI platform capabilities">
+              <span class="platform-chip">Foundry Models</span>
+              <span class="platform-chip">Agent Service</span>
+              <span class="platform-chip">Foundry IQ</span>
+              <span class="platform-chip">Control Plane</span>
+              <span class="platform-chip">Azure Machine Learning</span>
+              <span class="platform-chip">Foundry Local</span>
+            </div>
+            <p class="scope-note reveal" style="--delay: .42s">Scope: the current “Available Foundry Tools” inventory. The platform capabilities above sit alongside—not inside—the tools list.</p>
+          </div>
+
+          <div class="service-atlas reveal-scale" style="--delay: .18s" aria-label="Current Microsoft Foundry Tools catalog">
+            <div class="atlas-header">
+              <div>
+                <span class="atlas-kicker">Current portfolio</span>
+                <h2>Our Cloud AI services</h2>
+              </div>
+              <div class="atlas-legend" aria-label="Capability families">
+                <span class="legend-item legend-communicate">Communicate</span>
+                <span class="legend-item legend-understand">Understand</span>
+                <span class="legend-item legend-retrieve">Retrieve · protect · include</span>
+              </div>
+            </div>
+
+            <div class="service-grid">
+              <a class="service-card family-communicate" style="--delay: .26s" href="https://learn.microsoft.com/en-us/azure/ai-services/speech-service/" target="_blank" rel="noreferrer">
+                <span class="icon-shell" aria-hidden="true">
+                  <svg class="service-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="all-speech-g1" x1="5.681" y1="-.862" x2="5.681" y2="15.008" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5ea0ef"/><stop offset="1" stop-color="#0078d4"/></linearGradient></defs>
+                    <path d="M7.3,7.019H17.341A.659.659,0,0,1,18,7.677v7.981a.66.66,0,0,1-.659.658h-4.11a.109.109,0,0,0-.067.023l-2.108,1.615a.219.219,0,0,1-.353-.174V16.426a.11.11,0,0,0-.109-.11H7.3a.659.659,0,0,1-.658-.658V7.677A.66.66,0,0,1,7.3,7.019Z" fill="#50e6ff"/><path d="M11.361.659v7.98A.659.659,0,0,1,10.7,9.3h-3.3a.11.11,0,0,0-.109.11v1.355a.22.22,0,0,1-.353.174L4.836,9.32A.109.109,0,0,0,4.769,9.3H.659A.66.66,0,0,1,0,8.639V.659A.659.659,0,0,1,.659,0H10.7A.66.66,0,0,1,11.361.659Z" fill="url(#all-speech-g1)"/><path d="M8.1,4.26a3.48,3.48,0,0,1-.07.7,3.688,3.688,0,0,1-.2.667,3.249,3.249,0,0,1-.329.615,4.03,4.03,0,0,1-.336.426.156.156,0,0,1-.226,0l-.031-.03a.159.159,0,0,1,0-.22,3.261,3.261,0,0,0,.3-.378,3.164,3.164,0,0,0,.477-1.153,3.242,3.242,0,0,0,0-1.262,3.13,3.13,0,0,0-.181-.6,3.311,3.311,0,0,0-.3-.553,3.107,3.107,0,0,0-.3-.38.16.16,0,0,1,0-.22l.032-.031a.156.156,0,0,1,.225,0,3.555,3.555,0,0,1,.336.428,3.453,3.453,0,0,1,.326.615,3.76,3.76,0,0,1,.2.667A3.3,3.3,0,0,1,8.1,4.26ZM6.924,3.3a2.516,2.516,0,0,0-.431-.693.155.155,0,0,0-.226,0l-.031.031a.154.154,0,0,0-.01.211,2.142,2.142,0,0,1,0,2.825.155.155,0,0,0,.01.212l.031.031a.155.155,0,0,0,.226,0,2.546,2.546,0,0,0,.431-.693,2.51,2.51,0,0,0,0-1.916Zm-1.238.3a1.134,1.134,0,0,1,.143.248,1.088,1.088,0,0,1,0,.824,1.011,1.011,0,0,1-.142.245.156.156,0,0,0,.014.205l.03.03a.159.159,0,0,0,.235-.012,1.421,1.421,0,0,0,.2-.334,1.444,1.444,0,0,0,.106-.547,1.486,1.486,0,0,0-.109-.547,1.359,1.359,0,0,0-.193-.332.158.158,0,0,0-.236-.013L5.7,3.4A.153.153,0,0,0,5.686,3.6Zm-2-.413H3.314A.314.314,0,0,0,3,3.5V5.018a.315.315,0,0,0,.314.314h.374a.314.314,0,0,1,.222.092l.937.935a.161.161,0,0,0,.111.046h0a.187.187,0,0,0,.187-.187V2.3a.189.189,0,0,0-.189-.189h0a.162.162,0,0,0-.112.046L3.91,3.1A.315.315,0,0,1,3.688,3.188Z" fill="#fff"/><path d="M15.211,10.932a.831.831,0,1,1-.83.83A.83.83,0,0,1,15.211,10.932Zm-3.48.837a.831.831,0,1,0,.831-.83A.831.831,0,0,0,11.731,11.769Zm-2.649,0a.831.831,0,1,0,.831-.83A.831.831,0,0,0,9.082,11.769Z" fill="#fff"/>
+                  </svg>
+                </span>
+                <span class="service-copy"><span class="service-family">Communicate</span><h3>Azure Speech</h3><p>Speech to text, text to speech, translation, and speaker recognition.</p></span>
+              </a>
+
+              <a class="service-card family-understand" style="--delay: .3s" href="https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/" target="_blank" rel="noreferrer">
+                <span class="icon-shell" aria-hidden="true">
+                  <svg class="service-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="all-cu-g1" x1="10.91" y1="13.66" x2="13.62" y2="13.66" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#302ec9"/><stop offset=".12" stop-color="#151698"/><stop offset=".25" stop-color="#0a0b7e"/><stop offset=".43" stop-color="#090c7f"/><stop offset=".51" stop-color="#141698"/><stop offset=".61" stop-color="#282ac4"/><stop offset=".77" stop-color="#8e8ff4"/><stop offset=".85" stop-color="#a7a6f7"/><stop offset=".91" stop-color="#cacafb"/><stop offset="1" stop-color="#fff"/></linearGradient><linearGradient id="all-cu-g2" x1="12.26" y1="8.32" x2="12.26" y2="18.23" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset=".02" stop-color="#201ba6"/><stop offset=".64" stop-color="#2d29c7"/><stop offset="1" stop-color="#201ba6"/></linearGradient><linearGradient id="all-cu-g3" x1="14.19" y1="8.27" x2="14.19" y2="14.47" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3530c3"/><stop offset=".5" stop-color="#6d71d1"/><stop offset=".97" stop-color="#c0bff5"/><stop offset="1" stop-color="#e3e4ff"/></linearGradient><linearGradient id="all-cu-g4" x1="6.51" y1="3" x2="6.51" y2="19.15" gradientTransform="translate(0 20) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#302ec9"/><stop offset=".45" stop-color="#302ec9"/><stop offset=".95" stop-color="#cacafb"/><stop offset="1" stop-color="#7f7eaf"/></linearGradient></defs>
+                    <path d="M11.96,11.68s.07-.1.07-.24v-3.87c0-.85.66-1.76,1.59-2.03-.06-.19-.64-2.11-.81-2.65-.17-.56-.67-1.9-1.29-1.9,0,0,0,0-.01,0h0s-.09.05-.13.13c-.32.58-.46,3.02-.46,4.84v2.26c.27.97.91,3.22.96,3.35,0,0,.05.1.09.1h0Z" fill="url(#all-cu-g1)"/><path d="M11.96,11.68s.07-.1.07-.24v-3.87c0-.85.66-1.76,1.59-2.03-.06-.19-.64-2.11-.81-2.65-.17-.56-.67-1.9-1.29-1.9,0,0,0,0-.01,0h0s-.09.05-.13.13c-.32.58-.46,3.02-.46,4.84v2.26c.27.97.91,3.22.96,3.35,0,0,.05.1.09.1h0Z" fill="url(#all-cu-g2)"/><path d="M16.01,5.46h-1.81c-1.21,0-2.17,1.09-2.17,2.11v3.87c0,.14-.04.24-.07.24s-.09-.1-.09-.1c0,0,.07.21.17.21h1.98c.62,0,2.48-.61,2.48-2.52v-3.25c0-.41-.24-.55-.49-.55Z" fill="url(#all-cu-g3)"/><path d="M2.34,17h5.38c2.35,0,3.2-2.03,3.2-3.81v-7.23c0-2.08.19-4.97.61-4.97h-3.23c-.77,0-1.43.82-2.18,2.48-.75,1.66-4.36,11.87-4.52,12.36-.26.79-.02,1.16.74,1.16Z" fill="url(#all-cu-g4)"/>
+                  </svg>
+                </span>
+                <span class="service-copy"><span class="service-family">Understand</span><h3>Azure Content Understanding</h3><p>Analyze and structure documents, images, audio, and video.</p></span>
+              </a>
+
+              <a class="service-card family-communicate" style="--delay: .34s" href="https://learn.microsoft.com/en-us/azure/ai-services/translator/" target="_blank" rel="noreferrer">
+                <span class="icon-shell" aria-hidden="true">
+                  <svg class="service-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="all-translator-g1" x1="9" x2="9" y2="18" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5ea0ef"/><stop offset="1" stop-color="#0078d4"/></linearGradient><linearGradient id="all-translator-g2" x1="-998.057" y1="-213.109" x2="-1002.698" y2="-204.987" gradientTransform="translate(-195.271 1006.992) rotate(90)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient><linearGradient id="all-translator-g3" x1="-122.365" y1="1106.487" x2="-127.006" y2="1114.61" gradientTransform="translate(-1106.024 -112.477) rotate(-90)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#fff" stop-opacity=".3"/></linearGradient></defs>
+                    <rect width="18" height="18" rx=".6" fill="url(#all-translator-g1)"/><path d="M13.281,9.822a3.549,3.549,0,0,0-1.946.537v.94a2.819,2.819,0,0,1,1.868-.7q1.181,0,1.18,1.459l-1.717.241q-1.89.262-1.89,1.868a1.568,1.568,0,0,0,.484,1.2,1.882,1.882,0,0,0,1.339.453,1.921,1.921,0,0,0,1.762-1.029h.022v.895H15.3V11.958Q15.3,9.822,13.281,9.822Zm1.1,3.534a1.706,1.706,0,0,1-.445,1.211,1.47,1.47,0,0,1-1.126.478,1.155,1.155,0,0,1-.8-.265.874.874,0,0,1-.3-.685.913.913,0,0,1,.324-.8A2.247,2.247,0,0,1,13,12.976l1.381-.19Z" fill="#fff"/><path d="M13.782,8.891l1.537-1.58c.167-.166.106-.311-.16-.311h-.683a.2.2,0,0,1-.2-.2c.022-1.019-.264-3.848-4.129-3.944a.2.2,0,0,0-.2.2v1a.2.2,0,0,0,.216.2A2.373,2.373,0,0,1,13.026,6.8a.2.2,0,0,1-.2.2H12.2c-.322,0-.376.1-.161.311l1.425,1.58A.2.2,0,0,0,13.782,8.891Z" fill="url(#all-translator-g2)"/><path d="M4.52,9.932l-1.538,1.58c-.167.167-.106.311.161.311h.682a.2.2,0,0,1,.2.2C4,13.042,4.285,15.871,8.15,15.967a.2.2,0,0,0,.2-.2v-1a.2.2,0,0,0-.215-.2,2.373,2.373,0,0,1-2.863-2.551.2.2,0,0,1,.2-.2h.632c.321,0,.375-.1.16-.311L4.841,9.932A.2.2,0,0,0,4.52,9.932Z" fill="url(#all-translator-g3)"/><path d="M6.63,4.4a2.62,2.62,0,0,1,1.416.746,2,2,0,0,1-.014,2.9,3.036,3.036,0,0,1-1.914.742l-.285-.643a2.731,2.731,0,0,0,1.6-.462,1.3,1.3,0,0,0,.565-1.077A1.418,1.418,0,0,0,7.56,5.583,2.046,2.046,0,0,0,6.467,5.01a6.487,6.487,0,0,1-1.138,2.3,2.205,2.205,0,0,0,.262.457l-.536.372a2.221,2.221,0,0,1-.218-.333,2.313,2.313,0,0,1-1.444.635,1.139,1.139,0,0,1-.821-.317,1.246,1.246,0,0,1-.329-.937A2.383,2.383,0,0,1,2.777,5.73,3.317,3.317,0,0,1,4.143,4.669q.024-.8.052-1.119-.834.032-1.317.032l-.107-.619q.519.019,1.471-.016a12.15,12.15,0,0,1,.21-1.364l.619.091L4.9,2.9a24.13,24.13,0,0,0,2.59-.31l.131.6a27.012,27.012,0,0,1-2.777.322,7.044,7.044,0,0,0-.059.928,4.058,4.058,0,0,1,.936-.123c.082,0,.162,0,.242.008a2.4,2.4,0,0,0,.115-.512l.634.091A3.792,3.792,0,0,1,6.63,4.4ZM4.552,7.172a6.95,6.95,0,0,1-.381-1.821,2.468,2.468,0,0,0-.913.8,1.761,1.761,0,0,0-.337,1,.688.688,0,0,0,.143.508.434.434,0,0,0,.294.13,1.6,1.6,0,0,0,.523-.138A1.952,1.952,0,0,0,4.552,7.172Zm1.241-2.21a3.7,3.7,0,0,0-.976.147,5.732,5.732,0,0,0,.23,1.464A6,6,0,0,0,5.793,4.962Z" fill="#fff"/>
+                  </svg>
+                </span>
+                <span class="service-copy"><span class="service-family">Communicate</span><h3>Azure Translator</h3><p>Translate text and documents across more than 100 languages.</p></span>
+              </a>
+
+              <a class="service-card family-understand" style="--delay: .38s" href="https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/" target="_blank" rel="noreferrer">
+                <span class="icon-shell" aria-hidden="true">
+                  <svg class="service-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="all-document-g1" x1="7.822" y1="17.653" x2="7.822" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0078d4"/><stop offset=".817" stop-color="#5ea0ef"/></linearGradient></defs>
+                    <path d="M8.824.132H1.311A.594.594,0,0,0,.718.726v16.2a.594.594,0,0,0,.593.594H14.332a.594.594,0,0,0,.593-.594V6.205a.594.594,0,0,0-.593-.594H10.01a.594.594,0,0,1-.593-.594V.726A.593.593,0,0,0,8.824.132Z" fill="#83b9f9"/><path d="M8.55.89V4.96a1.494,1.494,0,0,0,1.491,1.493h4.1v10.31H1.5V.89H8.55M8.837,0H1.215a.6.6,0,0,0-.6.6V17.05a.6.6,0,0,0,.6.6H14.428a.6.6,0,0,0,.6-.6V6.165a.6.6,0,0,0-.6-.6H10.041a.6.6,0,0,1-.6-.6V.6a.6.6,0,0,0-.6-.6Z" fill="url(#all-document-g1)"/><path d="M14.8,5.683,9.232.132V4.655a1.022,1.022,0,0,0,1.015,1.028Z" fill="#0078d4"/><rect x="2.686" y="8.329" width="9.713" height="1.36" rx=".567" fill="#fff"/><rect x="2.686" y="11.083" width="9.713" height="1.36" rx=".567" fill="#fff" opacity=".8"/><rect x="2.686" y="13.838" width="9.713" height="1.36" rx=".567" fill="#fff" opacity=".6"/><circle cx="12.87" cy="13.484" r="4.516" fill="#fff"/><path d="M12.87,9.446a4.038,4.038,0,1,1-4.037,4.038A4.042,4.042,0,0,1,12.87,9.446m0-.479a4.517,4.517,0,1,0,4.517,4.517A4.516,4.516,0,0,0,12.87,8.967Z" fill="#50e6ff"/><path d="M12.324,12.9H10.866V11.44h1.458Zm2.551-1.458H13.417V12.9h1.458ZM12.324,14H10.866v1.458h1.458Zm2.551,0H13.417v1.458h1.458Z" fill="#50e6ff"/>
+                  </svg>
+                </span>
+                <span class="service-copy"><span class="service-family">Understand</span><h3>Azure Document Intelligence</h3><p>Turn documents into structured, data-driven solutions.</p></span>
+              </a>
+
+              <a class="service-card family-communicate" style="--delay: .42s" href="https://learn.microsoft.com/en-us/azure/ai-services/language-service/" target="_blank" rel="noreferrer">
+                <span class="icon-shell" aria-hidden="true">
+                  <svg class="service-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="all-language-g1" x1="11.841" y1="2.17" x2="11.841" y2="13.446" gradientUnits="userSpaceOnUse"><stop offset=".001" stop-color="#ffb34d"/><stop offset="1" stop-color="#faa21d"/></linearGradient><linearGradient id="all-language-g2" x1="-2018.213" y1="1017.927" x2="-2018.213" y2="1009.817" gradientTransform="translate(-2013.007 1025.516) rotate(180)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#50e6ff"/><stop offset="1" stop-color="#32bedd"/></linearGradient></defs>
+                    <path d="M.362,3.138A.362.362,0,0,1,0,2.777H0V.361A.362.362,0,0,1,.362,0H2.628a.361.361,0,0,1,0,.722H.724V2.775a.363.363,0,0,1-.361.363ZM18,2.777V.361A.362.362,0,0,0,17.638,0H15.372a.361.361,0,1,0,0,.722h1.9V2.775a.362.362,0,0,0,.724,0ZM2.99,17.639a.361.361,0,0,0-.362-.361H.724V15.225a.362.362,0,0,0-.724,0V17.64A.362.362,0,0,0,.362,18H2.628A.362.362,0,0,0,2.99,17.639Zm15.01,0V15.225a.362.362,0,0,0-.724,0v2.053h-1.9a.361.361,0,1,0,0,.722h2.266A.362.362,0,0,0,18,17.64Z" fill="#faa21d"/><path d="M16.684,2.666V13.129a.318.318,0,0,1-.3.329H10.628a.281.281,0,0,1-.281-.281V8.266A.945.945,0,0,0,9.415,7.4H7.279A.281.281,0,0,1,7,7.12V2.666a.316.316,0,0,1,.3-.33h9.08A.318.318,0,0,1,16.684,2.666Z" fill="url(#all-language-g1)"/><path d="M9.414,7.823H1A.53.53,0,0,0,.489,8.3v5.687A.524.524,0,0,0,1,14.463H3.784a.08.08,0,0,1,.081.079V15.5a.191.191,0,0,0,.208.164.181.181,0,0,0,.086-.035l.278-.181.77-.51.7-.466a.11.11,0,0,1,.052-.017H9.414a.509.509,0,0,0,.511-.468V8.3A.523.523,0,0,0,9.414,7.823Z" fill="url(#all-language-g2)"/><path d="M12.12,6.405H8.563a.357.357,0,1,1,0-.713H12.12a.357.357,0,1,1,0,.713Zm3.355,1.55a.357.357,0,0,0-.357-.356h-3.4a.357.357,0,1,0,0,.713h3.4A.357.357,0,0,0,15.475,7.955ZM5.843,10.149a.356.356,0,0,0-.357-.356H1.929a.356.356,0,1,0,0,.712H5.486A.356.356,0,0,0,5.843,10.149Zm3,1.906a.357.357,0,0,0-.357-.356H4.512a.357.357,0,1,0,0,.713H8.485A.357.357,0,0,0,8.842,12.055Z" fill="#f2f2f2"/>
+                  </svg>
+                </span>
+                <span class="service-copy"><span class="service-family">Communicate</span><h3>Azure Language</h3><p>Build apps with natural language understanding capabilities.</p></span>
+              </a>
+
+              <a class="service-card family-understand" style="--delay: .46s" href="https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/" target="_blank" rel="noreferrer">
+                <span class="icon-shell" aria-hidden="true">
+                  <svg class="service-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="all-vision-g1" x1="8.765" y1="15.265" x2="8.765" y2="2.901" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5ea0ef"/><stop offset="1" stop-color="#0078d4"/></linearGradient></defs>
+                    <path d="M.59,4.891a.563.563,0,0,1-.563-.563V.563A.563.563,0,0,1,.59,0H4.115a.563.563,0,0,1,0,1.126H1.153v3.2A.563.563,0,0,1,.59,4.891Zm17.383-.563V.563A.564.564,0,0,0,17.41,0H13.885a.563.563,0,1,0,0,1.126h2.962v3.2a.563.563,0,0,0,1.126,0ZM4.678,17.437a.563.563,0,0,0-.563-.563H1.153v-3.2a.563.563,0,0,0-1.126,0v3.765A.563.563,0,0,0,.59,18H4.115A.563.563,0,0,0,4.678,17.437Zm13.295,0V13.672a.563.563,0,0,0-1.126,0v3.2H13.885a.563.563,0,0,0,0,1.126H17.41A.564.564,0,0,0,17.973,17.437Z" fill="#50e6ff"/><circle cx="8.765" cy="8.946" r="7.154" fill="#0078d4"/><circle cx="8.765" cy="9.083" r="6.182" fill="url(#all-vision-g1)"/><circle cx="8.765" cy="8.98" r="5.047" fill="#5ea0ef"/><circle cx="8.765" cy="9.014" r="3.355" fill="#005ba1"/><circle cx="7.661" cy="7.778" r="1.008" fill="#fff"/><circle cx="8.765" cy="9.048" r=".447" fill="#fff"/>
+                  </svg>
+                </span>
+                <span class="service-copy"><span class="service-family">Understand</span><h3>Azure Vision</h3><p>Analyze content in images and video.</p></span>
+              </a>
+
+              <a class="service-card family-retrieve" style="--delay: .5s" href="https://learn.microsoft.com/en-us/azure/search/" target="_blank" rel="noreferrer">
+                <span class="icon-shell" aria-hidden="true">
+                  <svg class="service-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="all-search-g1" x1="9" y1=".36" x2="9" y2="18.31" gradientUnits="userSpaceOnUse"><stop offset=".18" stop-color="#5ea0ef"/><stop offset="1" stop-color="#0078d4"/></linearGradient></defs>
+                    <path d="M18,11.32a4.12,4.12,0,0,0-3.51-4,5.15,5.15,0,0,0-5.25-5,5.25,5.25,0,0,0-5,3.49A4.86,4.86,0,0,0,0,10.59a5,5,0,0,0,5.07,4.82l.44,0h8.21a.78.78,0,0,0,.22,0A4.13,4.13,0,0,0,18,11.32Z" fill="url(#all-search-g1)"/><path d="M12.33,6.59a3.07,3.07,0,0,0-5.61.85,3.16,3.16,0,0,0,.33,2.27L4.71,12.08a.79.79,0,0,0,0,1.12.78.78,0,0,0,.56.23.76.76,0,0,0,.56-.23l2.33-2.36a3.14,3.14,0,0,0,.81.33,3.08,3.08,0,0,0,3.36-4.58Zm-.54,2.1A2.16,2.16,0,0,1,9.7,10.34a1.79,1.79,0,0,1-.51-.07,1.87,1.87,0,0,1-.7-.32,2.13,2.13,0,0,1-.56-.56,2.17,2.17,0,0,1-.31-1.73A2.14,2.14,0,0,1,9.7,6a2.31,2.31,0,0,1,.52.06,2.18,2.18,0,0,1,1.32,1A2.13,2.13,0,0,1,11.79,8.69Z" fill="#f2f2f2"/><ellipse cx="9.69" cy="8.18" rx="2.15" ry="2.16" fill="#83b9f9"/>
+                  </svg>
+                </span>
+                <span class="service-copy"><span class="service-family">Retrieve</span><h3>Azure Search</h3><p>Bring AI-powered cloud search to apps and agents.</p></span>
+              </a>
+
+              <a class="service-card family-understand" style="--delay: .54s" href="https://learn.microsoft.com/en-us/azure/ai-services/custom-vision-service/" target="_blank" rel="noreferrer">
+                <span class="icon-shell" aria-hidden="true">
+                  <svg class="service-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="all-custom-g1" x1="8.85" y1="16.668" x2="8.85" y2="1.372" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5ea0ef"/><stop offset="1" stop-color="#0078d4"/></linearGradient></defs>
+                    <path d="M8.85,0a8.85,8.85,0,1,0,1.588,17.553l-.261-.225-.762-.773a.449.449,0,0,1-.087-.507l.505-1.07-.153-.37L8.738,14.3l-.154-.045a.449.449,0,0,1-.323-.431V12.738a.448.448,0,0,1,.3-.422l1.118-.4.153-.368-.459-.894L9.3,10.508a.45.45,0,0,1,.084-.524l.764-.756a.449.449,0,0,1,.512-.085l1.074.52.375-.141.3-.9a.444.444,0,0,1,.108-.174l.055-.055a.449.449,0,0,1,.318-.131h1.072a.45.45,0,0,1,.419.285l.39,1,.358.1.925-.474L16.2,9.1a.438.438,0,0,1,.2-.048.448.448,0,0,1,.319.132l.416.418.342.345a.448.448,0,0,1,.123.234,8.95,8.95,0,0,0,.1-1.329A8.85,8.85,0,0,0,8.85,0Z" fill="#0078d4"/><path d="M9.415,16.555a.449.449,0,0,1-.087-.507l.505-1.07-.153-.37L8.738,14.3l-.154-.045a.449.449,0,0,1-.323-.431V12.738a.448.448,0,0,1,.3-.422l1.118-.4.153-.368-.459-.894L9.3,10.508a.45.45,0,0,1,.084-.524l.764-.756a.449.449,0,0,1,.512-.085l1.074.52.375-.141.3-.9a.444.444,0,0,1,.108-.174l.055-.055a.449.449,0,0,1,.318-.131h1.072a.45.45,0,0,1,.419.285l.39,1,.276.078a6.242,6.242,0,1,0-6.2,5.515,6.16,6.16,0,0,0,.946-.08Z" fill="url(#all-custom-g1)"/><path d="M8.261,12.738a.448.448,0,0,1,.3-.422l1.118-.4.153-.368-.459-.894L9.3,10.508a.45.45,0,0,1,.084-.524l.764-.756a.449.449,0,0,1,.512-.085l1.074.52.375-.141.3-.9a.444.444,0,0,1,.108-.174l.055-.055a.449.449,0,0,1,.318-.131h.049a4.147,4.147,0,1,0-4.679,4.777Z" fill="#005ba1"/><circle cx="7.484" cy="7.406" r="1.246" fill="#83b9f9"/><circle cx="8.85" cy="8.977" r=".553" fill="#83b9f9"/><path d="M18,13.772V12.693l-.058-.054-1.1-.373-.285-.743.547-1.134.058-.128-.342-.344L16.4,9.5l-.144.073-1.079.553-.744-.208L13.963,8.71H12.891l-.055.055-.372,1.1-.755.283-1.248-.6L9.7,10.3l.073.142.553,1.078-.308.743-1.3.471V13.82l.154.045,1.152.381.309.743-.59,1.251.762.773.145-.073,1.08-.553.743.308.473,1.3h1.079l.045-.154.381-1.152.735-.309,1.261.59.763-.762-.073-.145-.553-1.08.213-.755Zm-4.545,1a1.515,1.515,0,1,1,1.506-1.524v.009A1.517,1.517,0,0,1,13.455,14.771Z" fill="#50e6ff"/>
+                  </svg>
+                </span>
+                <span class="service-copy"><span class="service-family">Understand</span><h3>Custom Vision</h3><p>Customize image recognition for your domain.</p></span>
+              </a>
+
+              <a class="service-card family-retrieve" style="--delay: .58s" href="https://learn.microsoft.com/en-us/azure/ai-services/content-safety/" target="_blank" rel="noreferrer">
+                <span class="icon-shell" aria-hidden="true">
+                  <svg class="service-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="all-safety-g1" x1="12.062" y1="5.427" x2="12.062" y2="3.991" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#76bc2d"/><stop offset="1" stop-color="#86d633"/></linearGradient><linearGradient id="all-safety-g2" x1="2.902" y1="6.762" x2="9.455" y2="6.762" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e6e6e6"/><stop offset="1" stop-color="#999"/></linearGradient><linearGradient id="all-safety-g3" x1="-1288.505" y1="-521.774" x2="-1284.777" y2="-521.774" gradientTransform="translate(-512.319 1291.819) rotate(90)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#86d633"/><stop offset="1" stop-color="#76bc2d"/></linearGradient><linearGradient id="all-safety-g4" x1="2.902" y1="11.544" x2="9.455" y2="11.544" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e6e6e6"/><stop offset="1" stop-color="#999"/></linearGradient><linearGradient id="all-safety-g5" x1="-274.183" y1="-521.774" x2="-279.397" y2="-521.774" gradientTransform="translate(-512.319 -263.224) rotate(-90) scale(1 -1)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#faa21d"/><stop offset=".999" stop-color="#f78d1e"/></linearGradient><linearGradient id="all-safety-g6" x1="-140.646" y1="13.626" x2="-143.764" y2="4.784" gradientTransform="translate(149.182) skewX(-19.425)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#50e6ff"/><stop offset="1" stop-color="#9cebff"/></linearGradient></defs>
+                    <path d="m16.62,4.541-2.765-1.597c-.129-.075-.291.019-.291.168v.822h-6.158v1.55h6.158v.822c0,.149.161.242.291.168l2.765-1.597c.129-.075.129-.261,0-.336Z" fill="url(#all-safety-g1)"/><path d="m4.495,9.616h-1.592v-4.634c-.002-.591.476-1.071,1.067-1.073h5.486v1.592h-4.96v4.115Z" fill="url(#all-safety-g2)"/><circle cx="9.455" cy="4.603" r="2.607" fill="url(#all-safety-g3)"/><path d="m9.455,14.4H3.971c-.591,0-1.07-.48-1.069-1.071v-4.64h1.592v4.115h4.96v1.596Z" fill="url(#all-safety-g4)"/><circle cx="9.455" cy="13.397" r="2.607" fill="url(#all-safety-g5)"/><path d="m5.008,12.097H1.696c-.272,0-.453-.301-.405-.673l.584-4.534c.048-.372.307-.673.578-.673h3.312c.272,0,.453.301.405.673l-.584,4.534c-.048.372-.307.673-.578.673Z" fill="url(#all-safety-g6)"/><path d="m.362,3.138C.162,3.138,0,2.976,0,2.777V.361C0,.162.162,0,.362,0h2.266c.2,0,.362.162.362.361s-.162.361-.362.361H.724v2.053c0,.199-.161.362-.361.362Zm17.638-.361V.361C18,.162,17.838,0,17.638,0h-2.266c-.2,0-.362.162-.362.361s.162.361.362.361h1.904v2.053c0,.199.162.361.362.361s.361-.162.362-.361ZM2.99,17.639c0-.199-.162-.361-.362-.361H.724v-2.053c0-.199-.162-.361-.362-.361s-.362.162-.362.361v2.415c0,.199.163.36.362.36h2.266c.2,0,.362-.162.362-.361Zm15.01.001v-2.415c0-.199-.162-.361-.362-.361s-.361.162-.362.361v2.053h-1.904c-.2,0-.362.162-.362.362s.162.361.362.361h2.266c.199,0,.361-.161.362-.36Z" fill="#76bc2d"/>
+                  </svg>
+                </span>
+                <span class="service-copy"><span class="service-family">Protect</span><h3>Azure Content Safety</h3><p>Detect unwanted and harmful content.</p></span>
+              </a>
+
+              <a class="service-card family-retrieve" style="--delay: .62s" href="https://learn.microsoft.com/en-us/azure/ai-services/immersive-reader/" target="_blank" rel="noreferrer">
+                <span class="icon-shell" aria-hidden="true">
+                  <svg class="service-icon" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="all-reader-g1" x1="8.355" y1="7.806" x2="15.035" y2="7.806" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ccc"/><stop offset="1" stop-color="#f0f0f0"/></linearGradient><linearGradient id="all-reader-g2" x1="14.131" y1="9.763" x2="14.131" y2="17.501" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#42e8ca"/><stop offset="1" stop-color="#3cd4c2"/></linearGradient></defs>
+                    <path d="M9.7,13.632a4.419,4.419,0,0,1,7.006-3.591V2.967a.669.669,0,0,0-.7-.64H.7a.67.67,0,0,0-.7.64V14.481a.67.67,0,0,0,.7.64H9.967A4.4,4.4,0,0,1,9.7,13.632Z" fill="#5ea0ef"/><path d="M9.7,13.632a4.419,4.419,0,0,1,7.006-3.591V2.967a.638.638,0,0,0-.636-.64H8.327V15.121h1.64A4.4,4.4,0,0,1,9.7,13.632Z" fill="#0078d4"/><path d="M7.019.5H2.009a.335.335,0,0,0-.334.336V13.584a.336.336,0,0,0,.334.336h5.01a1.219,1.219,0,0,1,1.336,1.192V1.843A1.339,1.339,0,0,0,7.019.5Z" fill="#f2f2f2"/><path d="M9.7,13.632A4.424,4.424,0,0,1,15.035,9.3V.835A.334.334,0,0,0,14.7.5H9.691A1.339,1.339,0,0,0,8.355,1.843V15.112A1.219,1.219,0,0,1,9.691,13.92h.028C9.713,13.824,9.7,13.729,9.7,13.632Z" fill="url(#all-reader-g1)"/><circle cx="14.131" cy="13.632" r="3.869" fill="url(#all-reader-g2)"/><path d="M6.991,3.747v.366a.148.148,0,0,1-.148.148H3.187a.147.147,0,0,1-.147-.148V3.747A.147.147,0,0,1,3.187,3.6H6.843A.148.148,0,0,1,6.991,3.747ZM6.843,5.585H3.187a.147.147,0,0,0-.147.148V6.1a.147.147,0,0,0,.147.148H6.843A.148.148,0,0,0,6.991,6.1V5.733A.148.148,0,0,0,6.843,5.585Zm0-3.972H3.187a.147.147,0,0,0-.147.148v.366a.147.147,0,0,0,.147.148H6.843a.148.148,0,0,0,.148-.148V1.761A.148.148,0,0,0,6.843,1.613Zm0,5.958H3.187a.148.148,0,0,0-.147.148v.366a.147.147,0,0,0,.147.148H6.843a.148.148,0,0,0,.148-.148V7.719A.148.148,0,0,0,6.843,7.571Zm0,1.986H3.187a.148.148,0,0,0-.147.148v.366a.147.147,0,0,0,.147.148H6.843a.148.148,0,0,0,.148-.148V9.705A.148.148,0,0,0,6.843,9.557ZM4.868,11.543H3.187a.148.148,0,0,0-.147.149v.365a.147.147,0,0,0,.147.148H4.868a.147.147,0,0,0,.147-.148v-.365A.148.148,0,0,0,4.868,11.543Z" fill="#b3b3b3"/><path d="M16.752,13.7a3.353,3.353,0,0,1-.066.667,3.531,3.531,0,0,1-.192.636,3.069,3.069,0,0,1-.313.584,3.9,3.9,0,0,1-.319.406.149.149,0,0,1-.216,0l-.029-.029a.151.151,0,0,1,0-.209A3.02,3.02,0,0,0,15.9,15.4a2.967,2.967,0,0,0,.282-.527,3.036,3.036,0,0,0,.173-.571,3.138,3.138,0,0,0,0-1.2,2.972,2.972,0,0,0-.173-.569,3.066,3.066,0,0,0-.282-.526,2.9,2.9,0,0,0-.281-.362.151.151,0,0,1,0-.209l.03-.031a.15.15,0,0,1,.215,0,3.462,3.462,0,0,1,.319.407,3.285,3.285,0,0,1,.311.585,3.7,3.7,0,0,1,.194.635A3.112,3.112,0,0,1,16.752,13.7Zm-1.119-.911a2.416,2.416,0,0,0-.41-.66.148.148,0,0,0-.215,0l-.03.03a.148.148,0,0,0-.01.2,2.011,2.011,0,0,1,.352.563,2.032,2.032,0,0,1-.352,2.126.148.148,0,0,0,.01.2l.03.029a.148.148,0,0,0,.215,0,2.41,2.41,0,0,0,.41-.659,2.386,2.386,0,0,0,0-1.823Zm-1.178.285a1.043,1.043,0,0,1,.136.236,1.036,1.036,0,0,1,0,.784,1.019,1.019,0,0,1-.135.233.148.148,0,0,0,.013.2l.029.028a.15.15,0,0,0,.223-.011,1.256,1.256,0,0,0,.186-.318,1.351,1.351,0,0,0,.1-.521,1.394,1.394,0,0,0-.1-.521,1.352,1.352,0,0,0-.184-.316.151.151,0,0,0-.224-.012l-.029.029A.147.147,0,0,0,14.455,13.074Zm-1.9-.394H12.2a.3.3,0,0,0-.3.3v1.443a.3.3,0,0,0,.3.3h.356a.3.3,0,0,1,.211.087l.892.89a.149.149,0,0,0,.105.044h0a.178.178,0,0,0,.178-.178V11.839a.181.181,0,0,0-.18-.18h0a.15.15,0,0,0-.106.044l-.889.889A.3.3,0,0,1,12.553,12.68Z" fill="#fff"/>
+                  </svg>
+                </span>
+                <span class="service-copy"><span class="service-family">Include</span><h3>Immersive Reader</h3><p>Help users read and comprehend text.</p></span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <footer class="source-line">Sources: <a href="https://learn.microsoft.com/en-us/azure/ai-services/what-are-ai-services" target="_blank" rel="noreferrer">Microsoft Learn — What are Foundry Tools?</a> · <a href="https://learn.microsoft.com/en-us/azure/foundry/" target="_blank" rel="noreferrer">Microsoft Foundry documentation</a> · Retrieved 02 Sep 2026.</footer>
+      </section>
+    </main>
+
+    <div class="deck-progress" aria-hidden="true"><span id="progress-fill"></span></div>
+
+    <nav class="controls" aria-label="Presentation controls">
+      <button class="control-button" id="previous-slide" type="button" aria-label="Previous slide">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="m12.5 4.5-5 5.5 5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <span class="slide-counter" id="slide-counter" aria-hidden="true">01 / 01</span>
+      <button class="control-button" id="next-slide" type="button" aria-label="Next slide">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="m7.5 4.5 5 5.5-5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button class="control-button" id="open-overview" type="button" aria-label="Open slide overview">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="3" y="3" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="11.5" y="3" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="11.5" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="11.5" y="11.5" width="5.5" height="5.5" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+      </button>
+      <button class="control-button" id="toggle-fullscreen" type="button" aria-label="Enter fullscreen">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7.5 3H3v4.5M12.5 3H17v4.5M17 12.5V17h-4.5M7.5 17H3v-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </nav>
+
+    <div class="overview" id="overview" role="dialog" aria-modal="true" aria-labelledby="overview-title" hidden>
+      <div class="overview-panel">
+        <div class="overview-header">
+          <h2 id="overview-title">Slide overview</h2>
+          <button class="control-button" id="close-overview" type="button" aria-label="Close slide overview">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="m4.5 4.5 11 11M15.5 4.5l-11 11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <button class="overview-card" type="button" data-slide="0" aria-current="true">
+          <span>01 / AI SERVICES</span><strong>All AI services</strong><small>The current Foundry Tools inventory and the adjacent Microsoft AI platform capabilities.</small>
+        </button>
+      </div>
+    </div>
+
+    <div class="sr-only" id="slide-status" role="status" aria-live="polite" aria-atomic="true"></div>
+  </div>
+
+  <script>
+    (() => {
+      const deck = document.getElementById('deck');
+      const stage = document.getElementById('stage');
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const previousButton = document.getElementById('previous-slide');
+      const nextButton = document.getElementById('next-slide');
+      const overviewButton = document.getElementById('open-overview');
+      const fullscreenButton = document.getElementById('toggle-fullscreen');
+      const closeOverviewButton = document.getElementById('close-overview');
+      const overview = document.getElementById('overview');
+      const overviewCards = Array.from(document.querySelectorAll('.overview-card'));
+      const counter = document.getElementById('slide-counter');
+      const status = document.getElementById('slide-status');
+      const progress = document.getElementById('progress-fill');
+      let overviewReturnTarget = overviewButton;
+      let pointerStart = null;
+
+      const hashIndex = slides.findIndex((slide) => slide.id === decodeURIComponent(location.hash.slice(1)));
+      let current = hashIndex >= 0 ? hashIndex : 0;
+      const twoDigits = (number) => String(number).padStart(2, '0');
+
+      const updateSlide = (nextIndex, updateHash = true) => {
+        current = Math.max(0, Math.min(slides.length - 1, nextIndex));
+
+        slides.forEach((slide, index) => {
+          const active = index === current;
+          slide.classList.toggle('is-active', active);
+          slide.setAttribute('aria-hidden', String(!active));
+          slide.inert = !active;
+        });
+
+        overviewCards.forEach((card, index) => card.setAttribute('aria-current', String(index === current)));
+        previousButton.disabled = current === 0;
+        nextButton.disabled = current === slides.length - 1;
+        counter.textContent = `${twoDigits(current + 1)} / ${twoDigits(slides.length)}`;
+        progress.style.setProperty('--progress', `${((current + 1) / slides.length) * 100}%`);
+        status.textContent = `Slide ${current + 1} of ${slides.length}: ${slides[current].dataset.title}`;
+        document.title = `${slides[current].dataset.title} — Microsoft Foundry`;
+
+        if (updateHash) history.replaceState(null, '', `#${slides[current].id}`);
+      };
+
+      const openOverview = (returnTarget = overviewButton) => {
+        overviewReturnTarget = returnTarget;
+        overview.hidden = false;
+        stage.inert = true;
+        document.querySelector('.controls').inert = true;
+        requestAnimationFrame(() => overviewCards[current].focus());
+      };
+
+      const closeOverview = () => {
+        overview.hidden = true;
+        stage.inert = false;
+        document.querySelector('.controls').inert = false;
+        overviewReturnTarget.focus?.();
+      };
+
+      previousButton.addEventListener('click', () => updateSlide(current - 1));
+      nextButton.addEventListener('click', () => updateSlide(current + 1));
+      overviewButton.addEventListener('click', () => openOverview());
+      closeOverviewButton.addEventListener('click', closeOverview);
+      overviewCards.forEach((card) => card.addEventListener('click', () => { updateSlide(Number(card.dataset.slide)); closeOverview(); }));
+      overview.addEventListener('click', (event) => { if (event.target === overview) closeOverview(); });
+
+      fullscreenButton.addEventListener('click', async () => {
+        try {
+          if (!document.fullscreenElement) await deck.requestFullscreen();
+          else await document.exitFullscreen();
+        } catch (error) {
+          status.textContent = 'Fullscreen is unavailable in this browser context.';
+        }
+      });
+
+      document.addEventListener('fullscreenchange', () => {
+        fullscreenButton.setAttribute('aria-label', document.fullscreenElement ? 'Exit fullscreen' : 'Enter fullscreen');
+      });
+
+      document.addEventListener('keydown', (event) => {
+        const target = event.target;
+        const interactive = target instanceof Element && target.closest('a, button, input, textarea, select, [contenteditable="true"]');
+
+        if (!overview.hidden) {
+          if (event.key === 'Escape') { event.preventDefault(); closeOverview(); }
+          return;
+        }
+        if (interactive) return;
+
+        if (['ArrowRight', 'ArrowDown', 'PageDown'].includes(event.key) || event.key === ' ') {
+          event.preventDefault();
+          updateSlide(current + 1);
+        } else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(event.key)) {
+          event.preventDefault();
+          updateSlide(current - 1);
+        } else if (event.key === 'Home') {
+          event.preventDefault();
+          updateSlide(0);
+        } else if (event.key === 'End') {
+          event.preventDefault();
+          updateSlide(slides.length - 1);
+        } else if (event.key.toLowerCase() === 'o') {
+          event.preventDefault();
+          openOverview(document.body);
+        } else if (event.key.toLowerCase() === 'f') {
+          event.preventDefault();
+          fullscreenButton.click();
+        }
+      });
+
+      stage.addEventListener('pointerdown', (event) => {
+        if (event.target instanceof Element && event.target.closest('a, button')) return;
+        pointerStart = { x: event.clientX, y: event.clientY, id: event.pointerId };
+        stage.setPointerCapture?.(event.pointerId);
+      });
+
+      stage.addEventListener('pointerup', (event) => {
+        if (!pointerStart || pointerStart.id !== event.pointerId) return;
+        const deltaX = event.clientX - pointerStart.x;
+        const deltaY = event.clientY - pointerStart.y;
+        pointerStart = null;
+        if (Math.abs(deltaX) > Math.max(48, Math.abs(deltaY) * 1.35)) updateSlide(current + (deltaX < 0 ? 1 : -1));
+      });
+
+      stage.addEventListener('pointercancel', () => { pointerStart = null; });
+      window.addEventListener('hashchange', () => {
+        const index = slides.findIndex((slide) => slide.id === decodeURIComponent(location.hash.slice(1)));
+        if (index >= 0 && index !== current) updateSlide(index, false);
+      });
+
+      updateSlide(current, hashIndex < 0);
+      requestAnimationFrame(() => document.documentElement.classList.add('motion-ready'));
+    })();
+  </script>
+</body>
+</html>
